@@ -30,6 +30,4 @@ Here's a breakdown of the available arguments:
 python main.py --ccys BTC ETH --wallets margin funding
 python main.py --ccys BTC ETH --refetch --plot
 python main.py --ccys BTC ETH XRP --wallets exchange
-
-
 ```
