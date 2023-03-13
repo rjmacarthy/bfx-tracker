@@ -1,0 +1,25 @@
+{
+  "name": "bfx-tracker",
+  "version": "1.0.0",
+  "description": "This script allows you to fetch balances and ledgers from Bitfinex for a specified list of cryptocurrencies (ccys) and wallets. It provides additional options for re-fetching the ledgers, generating plots of the balances, and printing the current balances to the console.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjmacarthy/bfx-tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjmacarthy/bfx-tracker/issues"
+  },
+  "homepage": "https://github.com/rjmacarthy/bfx-tracker#readme",
+  "type": "module",
+  "dependencies": {
+    "dataframe-js": "^1.4.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4"
+  }
+}

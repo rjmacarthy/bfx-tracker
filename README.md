@@ -26,8 +26,16 @@ Here's a breakdown of the available arguments:
 
 ### Examples
 
+#### Python
+
 ```
 python main.py --ccys BTC ETH --wallets margin funding
 python main.py --ccys BTC ETH --refetch --plot
 python main.py --ccys BTC ETH XRP --wallets exchange
 ```
+
+#### JavaScript
+
+To run the example in javascript the data must first be saved to the `data` directory in raw format (todo fetch with js)
+
+Then run the `index.js` example (todo allow parameters).
