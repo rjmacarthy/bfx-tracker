@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { DataFrame } from "dataframe-js";
 import fs from "fs";
 import moment from "moment";
 
@@ -15,24 +14,27 @@ async function getDailyBalances(ccy, wallet) {
 
   if (_.isEmpty(filteredData)) return;
 
-  const dailyBalances = new DataFrame(
-    _.map(filteredData, (row, index, array) => {
-      const mts = moment(row.mts, mtsFormat);
-      const amount = row.amount;
-      const balance = row.balance;
-      const date = mts.format(dateFormat);
-      const datetime = mts.format(datetimeFormat);
-      const prevBalance = _.get(array, [index - 1, "balance"], 0);
-      const emptyFill = amount === 0 || prevBalance === 0 ? 1 : 0;
-      return { date, datetime, amount, emptyFill, balance };
-    })
-  )
-    .groupBy("date")
-    .aggregate((group) => group.tail(1).select("balance").toArray());
+  const collection = _.map(filteredData, (row, index, array) => {
+    const mts = moment(row.mts, mtsFormat);
+    const amount = row.amount;
+    const balance = row.balance;
+    const date = mts.format(dateFormat);
+    const datetime = mts.format(datetimeFormat);
+    const prevBalance = _.get(array, [index - 1, "balance"], 0);
+    const emptyFill = amount === 0 || prevBalance === 0 ? 1 : 0;
+    return { date, datetime, amount, emptyFill, balance };
+  })
 
-  console.log(dailyBalances.head().show());
+  const groupedByDay = _.groupBy(collection, "date");
 
-  return dailyBalances;
+  const finalBalanceByDay = _.map(groupedByDay, (rows, date) => {
+    const balance = _.get(_.last(rows), "balance", 0);
+    return { date, balance };
+  });
+
+  console.log(finalBalanceByDay)
+
+  return finalBalanceByDay;
 }
 
 getDailyBalances("BTC", "exchange");

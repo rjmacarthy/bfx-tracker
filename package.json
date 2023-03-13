@@ -18,7 +18,6 @@
   "homepage": "https://github.com/rjmacarthy/bfx-tracker#readme",
   "type": "module",
   "dependencies": {
-    "dataframe-js": "^1.4.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.4"
   }
