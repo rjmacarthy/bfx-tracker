@@ -11,7 +11,8 @@ METHOD: str = "getLedgers"
 URL: str = "https://report.bitfinex.com/api/json-rpc"
 LIMIT = 1000
 WALLETS: List[str] = ["exchange", "margin", "funding", "contribution"]
-DATE_FROM: str = "2013-04-01"
+DATE_FROM: int = int(time.mktime(time.strptime("2013-01-01", "%Y-%m-%d")) * 1000)
+DATE_TO: int = int(time.time() * 1000)
 DEFAULT_HEADERS = {
     "bfx-nonce": str(int(time.time() * 1000)),
     "Content-Type": "application/json",
@@ -32,9 +33,9 @@ class BfxTracker:
         if not os.path.exists("./data/processed"):
             os.mkdir("./data/processed")
 
-    def track(self, ccys: List[str]):
+    def track(self, ccys: List[str], from_date: int = DATE_FROM, to_date: int = DATE_TO):
         for ccy in ccys:
-            ccyp = self.get_ledgers(ccy)
+            ccyp = self.get_ledgers(ccy, from_date, to_date)
             if os.path.exists(os.path.join("./data/raw", f"{ccy}.json")) and not self.refetch:
                 print(
                     f"Skipping {ccy} as it has already been fetched, use refetch=True to refresh")
@@ -44,22 +45,22 @@ class BfxTracker:
             for wallet in WALLETS:
                 self.process(ccy, wallet)
 
-    def get_ledgers_request(self, ccy: str):
+    def get_ledgers_request(self, ccy: str, from_date: int = DATE_FROM, to_date: int = DATE_TO):
         return json.dumps({
             "auth": {
                 "authToken": self.auth_token
             },
             "method": METHOD,
             "params": {
-                "start": int(time.mktime(time.strptime(DATE_FROM, "%Y-%m-%d")) * 1000),
-                "end": int(time.time() * 1000),
+                "start": from_date,
+                "end": to_date,
                 "limit": LIMIT,
                 "symbol": [ccy]
             }
         })
 
-    def get_ledgers(self, ccy: str):
-        return self.get_ledgers_request(ccy)
+    def get_ledgers(self, ccy: str, from_date: int = DATE_FROM, to_date: int = DATE_TO):
+        return self.get_ledgers_request(ccy, from_date, to_date)
 
     def fetch(self, payload, ccy: str):
         headers = DEFAULT_HEADERS

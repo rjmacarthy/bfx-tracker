@@ -13,14 +13,14 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ccys', nargs='+', required=True,
-                        help='List of ccys to fetch ledgers for')
-    parser.add_argument('--wallets', nargs='+', required=True,
-                        help='List of wallets to fetch balances for')
+    parser.add_argument('--ccys', nargs='+',
+                        help='List of ccys to fetch ledgers for', default=["BTC"])
+    parser.add_argument('--wallets', nargs='+',
+                        help='List of wallets to fetch balances for', default=["exchange"])
     parser.add_argument('--refetch', action='store_true',
                         help='If specified, re-fetches the ledgers from Bitfinex')
     parser.add_argument('--plot', action='store_true',
-                        help='If specified, generates plots of the balances')
+                        help='If specified, generates plots of the balances', default=True)
     parser.add_argument('--print', action='store_true',
                         help='If specified, prints the current balances to the console')
     parser.add_argument('--h', action='store_true',
